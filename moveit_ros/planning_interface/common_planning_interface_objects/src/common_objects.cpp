@@ -113,7 +113,7 @@ std::shared_ptr<tf2_ros::Buffer> getSharedTF()
   return buffer;
 }
 
-moveit::core::RobotModelConstPtr getSharedRobotModel(const std::string& robot_description)
+moveit::core::RobotModelPtr getSharedRobotModel(const std::string& robot_description)
 {
   SharedStorage& s = getSharedStorage();
   boost::mutex::scoped_lock slock(s.lock_);

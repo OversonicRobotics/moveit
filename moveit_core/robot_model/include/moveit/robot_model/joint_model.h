@@ -343,6 +343,13 @@ public:
     return variable_bounds_msg_;
   }
 
+  /** \brief Get the joint limits known to this model, as a message. */
+  std::vector<moveit_msgs::JointLimits>& getVariableBoundsMsg()
+  {
+    return variable_bounds_msg_;
+  }
+
+
   /** @} */
 
   /** \brief Compute the distance between two joint states of the same model (represented by the variable values) */

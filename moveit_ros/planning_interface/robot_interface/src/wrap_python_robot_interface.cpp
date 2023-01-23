@@ -149,6 +149,13 @@ public:
     }
     return result;
   }
+  
+  bp::list setJointLimits(const std::string& name, float min_position, float max_position)
+  {
+    robot_model_->setJointLimits(name, min_position, max_position);
+
+    return getJointLimits(name);
+  }
 
   const char* getPlanningFrame() const
   {
@@ -381,7 +388,7 @@ public:
   }
 
 private:
-  moveit::core::RobotModelConstPtr robot_model_;
+  moveit::core::RobotModelPtr robot_model_;
   planning_scene_monitor::CurrentStateMonitorPtr current_state_monitor_;
   ros::NodeHandle nh_;
 };
@@ -403,6 +410,7 @@ static void wrap_robot_interface()
   robot_class.def("get_link_names", &RobotInterfacePython::getLinkNames);
   robot_class.def("get_group_link_names", &RobotInterfacePython::getGroupLinkNames);
   robot_class.def("get_joint_limits", &RobotInterfacePython::getJointLimits);
+  robot_class.def("set_joint_limits", &RobotInterfacePython::setJointLimits);
   robot_class.def("get_link_pose", &RobotInterfacePython::getLinkPose);
   robot_class.def("get_planning_frame", &RobotInterfacePython::getPlanningFrame);
   robot_class.def("get_current_state", &RobotInterfacePython::getCurrentState);
