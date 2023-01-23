@@ -44,7 +44,7 @@ namespace planning_interface
 {
 std::shared_ptr<tf2_ros::Buffer> getSharedTF();
 
-moveit::core::RobotModelConstPtr getSharedRobotModel(const std::string& robot_description);
+moveit::core::RobotModelPtr getSharedRobotModel(const std::string& robot_description);
 
 /**
   @brief getSharedStateMonitor is a simpler version of getSharedStateMonitor(const moveit::core::RobotModelConstPtr

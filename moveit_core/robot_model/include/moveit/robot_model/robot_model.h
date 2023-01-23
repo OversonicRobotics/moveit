@@ -145,6 +145,9 @@ public:
   /** \brief Get a joint by its name. Output error and return NULL when the joint is missing. */
   JointModel* getJointModel(const std::string& joint);
 
+  /** \brief Set a joint limits by its name. Output error and return NULL when the joint is missing. */
+  void setJointLimits(const std::string& joint, float min_position, float max_position);
+
   /** \brief Get the array of joints, in the order they appear
       in the robot state. */
   const std::vector<const JointModel*>& getJointModels() const
@@ -572,7 +575,7 @@ protected:
   std::vector<int> active_joint_model_start_index_;
 
   /** \brief The bounds for all the active joint models */
-  JointBoundsVector active_joint_models_bounds_;
+  mutable JointBoundsVector active_joint_models_bounds_;
 
   /** \brief The joints that correspond to each variable index */
   std::vector<const JointModel*> joints_of_variable_;

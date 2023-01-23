@@ -1145,6 +1145,26 @@ JointModel* RobotModel::getJointModel(const std::string& name)
   return nullptr;
 }
 
+void RobotModel::setJointLimits(const std::string& name, float min_position, float max_position)
+{
+  ROS_INFO_NAMED(LOGNAME, "New limits set to joint '%s': [%f-%f]", name.c_str(), min_position, max_position);
+  for (JointModel* joint : joint_model_vector_){
+    if( joint->getName() == name ){
+      std::vector<moveit_msgs::JointLimits>& limits = joint->getVariableBoundsMsg();
+
+      // Joint limits are not defined for some joints. Skip them.
+      if (!limits.empty()){
+        limits[0].min_position = min_position;
+        limits[0].max_position = max_position;
+        joint->setVariableBounds(limits);
+        return;
+      }
+    }
+  }
+  ROS_ERROR_NAMED(LOGNAME, "Joint '%s' not found in model '%s'", name.c_str(), model_name_.c_str());
+  return;
+}
+
 const LinkModel* RobotModel::getLinkModel(const std::string& name, bool* has_link) const
 {
   return const_cast<RobotModel*>(this)->getLinkModel(name, has_link);

@@ -134,6 +134,13 @@ class RobotCommander(object):
             """
             return self._robot._r.get_joint_limits(self._name)
 
+        def set_joint_limits(self, min_position, max_position):
+            """
+            @return: A list of length of 2 that contains max and min positional
+                     limits of the specified joint.
+            """
+            return self._robot._r.set_joint_limits(self._name, min_position, max_position)
+
     class Link(object):
         def __init__(self, robot, name):
             self._robot = robot
