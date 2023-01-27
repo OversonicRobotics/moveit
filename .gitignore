@@ -48,6 +48,9 @@ qtcreator-*
 # VSCode
 .vscode
 
+# pycharm
+*.idea
+
 # Vim
 *.swp
 
