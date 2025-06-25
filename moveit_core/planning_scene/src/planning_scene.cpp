@@ -442,6 +442,11 @@ void PlanningScene::pushDiffs(const PlanningScenePtr& scene)
         scene->world_->removeObject(it.first);
         scene->removeObjectColor(it.first);
         scene->removeObjectType(it.first);
+        // if object is attached, it should not be removed from the ACM
+        if (!scene->getCurrentState().hasAttachedBody(it.first))
+        {
+          scene->getAllowedCollisionMatrixNonConst().removeEntry(it.first);
+        }
       }
       else
       {
@@ -1318,6 +1323,7 @@ bool PlanningScene::setPlanningSceneDiffMsg(const moveit_msgs::PlanningScene& sc
 
 bool PlanningScene::setPlanningSceneMsg(const moveit_msgs::PlanningScene& scene_msg)
 {
+  assert(scene_msg.is_diff == false);
   ROS_DEBUG_NAMED(LOGNAME, "Setting new planning scene: '%s'", scene_msg.name.c_str());
   name_ = scene_msg.name;
 
@@ -1416,6 +1422,7 @@ void PlanningScene::removeAllCollisionObjects()
       world_->removeObject(object_id);
       removeObjectColor(object_id);
       removeObjectType(object_id);
+      getAllowedCollisionMatrixNonConst().removeEntry(object_id);
     }
 }
 
@@ -1874,6 +1881,7 @@ bool PlanningScene::processCollisionObjectRemove(const moveit_msgs::CollisionObj
 
     removeObjectColor(object.id);
     removeObjectType(object.id);
+    getAllowedCollisionMatrixNonConst().removeEntry(object.id);
   }
   return true;
 }

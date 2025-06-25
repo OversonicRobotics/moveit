@@ -648,13 +648,11 @@ class MoveGroupCommander(object):
         self,
         waypoints,
         eef_step,
-        jump_threshold,
         avoid_collisions=True,
         path_constraints=None,
     ):
         """Compute a sequence of waypoints that make the end-effector move in straight line segments that follow the poses specified as waypoints.
         Configurations are computed for every eef_step meters.
-        The jump_threshold specifies the maximum distance in configuration space between consecutive points in the resultingpath.
         Kinematic constraints for the path given by path_constraints will be met for every point along the trajectory.
         If the Kinematic constraints are not met, a partial solution will be returned.
         The return value is a tuple: the actual RobotTrajectory and the fraction of how much of the path was followed.
@@ -665,12 +663,11 @@ class MoveGroupCommander(object):
             else:
                 raise MoveItCommanderException(
                     "Unable to set path constraints, unknown constraint type "
-                    + type(path_constraints)
+                    + str(type(path_constraints))
                 )
             (ser_path, fraction) = self._g.compute_cartesian_path(
                 [conversions.pose_to_list(p) for p in waypoints],
                 eef_step,
-                jump_threshold,
                 avoid_collisions,
                 constraints_str,
             )
@@ -678,7 +675,6 @@ class MoveGroupCommander(object):
             (ser_path, fraction) = self._g.compute_cartesian_path(
                 [conversions.pose_to_list(p) for p in waypoints],
                 eef_step,
-                jump_threshold,
                 avoid_collisions,
             )
 
